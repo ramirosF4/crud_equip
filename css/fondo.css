@@ -1,0 +1,22 @@
+body{
+    background-image: url(./img/fondo.png);
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    margin: 0; 
+}
+
+ .login-card {
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.70); 
+    border-radius: 25px;    
+}
+
+.table-card {
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.70);  
+    border-radius: 25px;    
+}
+
+ 
