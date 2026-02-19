@@ -1,3 +1,24 @@
+<?php
+
+require_once './controller/conexion.php'; 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  $insercion = $conexion->prepare("
+    INSERT INTO alumnos(nombre, apellido, carrera, semestre) 
+    VALUES (:nombre, :apellido, :carrera, :semestre)
+  "); 
+
+  $insercion->bindParam(":nombre", $_POST['nombre']); 
+  $insercion->bindParam(":apellido", $_POST['apellido']); 
+  $insercion->bindParam(":carrera", $_POST['carrera']);
+  $insercion->bindParam(":semestre", $_POST['semestre']);
+
+  $insercion->execute();
+
+  header("location: index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +34,7 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 
-                <form  class="container mt-5 border shadow p-4 login-card" style="max-width: 400px;" action="" method="POST">
+                <form  class="container mt-5 border shadow p-4 login-card" style="max-width: 400px;" action="agregar.php" method="POST">
 
                     <h1 class="text-success text-center mb-4 display-6"  >Añadir Alumno </h1>
                     <hr class = "text-primary"> 
