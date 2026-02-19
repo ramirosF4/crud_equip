@@ -1,3 +1,51 @@
+<?php
+// Conectamos a la base de datos
+include_once 'controller/conexion.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// BLOQUE DE SEGURIDAD
+// Si no hay ID en la URL y tampoco se está guardando info...
+if (!isset($_GET['id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    // ... mándalo de regreso al inicio para evitar el Error 500
+    header('Location: index.php');
+    exit();
+}
+
+// Cargar datos del alumno
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sentencia = $conexion->prepare("SELECT * FROM alumnos WHERE id = ?");
+    $sentencia->execute([$id]);
+    $alumno = $sentencia->fetch(PDO::FETCH_OBJ);
+
+    // Si el alumno no existe nos regresamos
+    if (!$alumno) {
+        header('Location: index.php');
+        exit();
+    }
+}
+
+// Guardar los cambios
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id_alumno'];
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $carrera = $_POST['carrera'];
+    $semestre = $_POST['semestre'];
+
+    $sentencia = $conexion->prepare("UPDATE alumnos SET nombre = ?, apellido = ?, carrera = ?, semestre = ? WHERE id = ?");
+    $resultado = $sentencia->execute([$nombre, $apellido, $carrera, $semestre, $id]);
+
+    if ($resultado) {
+        header('Location: index.php');
+    } else {
+        echo "Error al guardar cambios.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
