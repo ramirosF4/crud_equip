@@ -1,6 +1,6 @@
 <?php
 // Conectamos a la base de datos
-include_once 'controller/conexion.php';
+include_once 'config/conexion.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
