@@ -46,7 +46,7 @@ $alumno = $consulta ->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= $persona['carrera'] ?></td>
                         <td><?= $persona['semestre'] ?></td>
                         <td>
-                            <a href="editar.php" class="btn btn-outline-success">Editar</a>
+                            <a href="editar.php?id=<?= $persona['id'] ?>" class="btn btn-outline-success">Editar</a>
                             <a href="eliminar.php" class="btn btn-outline-danger">Eliminar</a>
                         </td>
                     </tr>

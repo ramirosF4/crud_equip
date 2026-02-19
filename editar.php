@@ -1,47 +1,38 @@
 <?php
-// Conectamos a la base de datos
+
+// Conexión a la bd
 include_once 'controller/conexion.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-// BLOQUE DE SEGURIDAD
-// Si no hay ID en la URL y tampoco se está guardando info...
-if (!isset($_GET['id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    // ... mándalo de regreso al inicio para evitar el Error 500
-    header('Location: index.php');
-    exit();
-}
-
-// Cargar datos del alumno
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sentencia = $conexion->prepare("SELECT * FROM alumnos WHERE id = ?");
+    $sentencia = $conexion->prepare("SELECT * FROM alumnos WHERE id = ?;");
     $sentencia->execute([$id]);
+    // Usamos FETCH_OBJ para acceder como $alumno->nombre
     $alumno = $sentencia->fetch(PDO::FETCH_OBJ);
 
-    // Si el alumno no existe nos regresamos
     if (!$alumno) {
         header('Location: index.php');
         exit();
     }
 }
 
-// Guardar los cambios
+// Aquí actualizamos los datos
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id_alumno'];
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $carrera = $_POST['carrera'];
-    $semestre = $_POST['semestre'];
+    $id_alumno = $_POST['id_alumno']; 
+    $nombre    = $_POST['nombre'];
+    $apellido  = $_POST['apellido'];
+    $carrera   = $_POST['carrera'];
+    $semestre  = $_POST['semestre'];
 
-    $sentencia = $conexion->prepare("UPDATE alumnos SET nombre = ?, apellido = ?, carrera = ?, semestre = ? WHERE id = ?");
-    $resultado = $sentencia->execute([$nombre, $apellido, $carrera, $semestre, $id]);
+    $sql = "UPDATE alumnos SET nombre = ?, apellido = ?, carrera = ?, semestre = ? WHERE id = ?;";
+    $sentencia = $conexion->prepare($sql);
+    $resultado = $sentencia->execute([$nombre, $apellido, $carrera, $semestre, $id_alumno]);
 
     if ($resultado) {
-        header('Location: index.php');
+        header('Location: index.php?status=success');
+        exit();
     } else {
-        echo "Error al guardar cambios.";
+        echo "Error al actualizar.";
     }
 }
 ?>
@@ -50,44 +41,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/fondo.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>E D I T A R</title>
 </head>
-<body>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
+<body class="bg-light p-5">
+    <div class="container card shadow p-4" style="max-width: 500px;">
+        <h2 class="text-center text-success">Editar Alumno</h2>
+        <hr>
+        <form action="editar.php" method="POST">
             
-                <form  class="container mt-5 border shadow p-4 login-card" style="max-width: 400px;" action="" method="POST">
+            <input type="hidden" name="id_alumno" value="<?= $alumno->id ?>">
 
-                    <h1 class="text-success text-center mb-4 display-6"  >Editar Alumno </h1>
-                    <hr class = "text-primary"> 
+            <label class="form-label">Nombre:</label>
+            <input name="nombre" value="<?= $alumno->nombre ?>" class="form-control mb-3" type="text" required>
 
-                    <input name="id_alumno" type="hidden" >
+            <label class="form-label">Apellido:</label>
+            <input name="apellido" value="<?= $alumno->apellido ?>" class="form-control mb-3" type="text" required>
 
-                    <label for="nombre">Nombre del alumno:</label>
-                    <input name= "nombre" class= "form-control mb-3" type="text">
+            <label class="form-label">Carrera:</label>
+            <input name="carrera" value="<?= $alumno->carrera ?>" class="form-control mb-3" type="text" required>
 
-                    <label for="apellido">Apellido del alumno:</label>
-                    <input name= "apellido" class= "form-control mb-3" type="text" >
-
-                    <label for="carrera">Carrera:</label>
-                    <input name= "carrera" class= "form-control mb-3" type="text">
-
-                    <label for="semestre">Semestre:</label>
-                    <input name= "semestre" class= "form-control mb-3" type="number">
-                    
+            <label class="form-label">Semestre:</label>
+            <input name="semestre" value="<?= $alumno->semestre ?>" class="form-control mb-3" type="number" required>
             
-                    <button type = "submit" class="btn btn-outline-success w-100 mb-3" >Editar Alumno</button>
-                    <a href="index.php" class = "btn btn-outline-danger w-100 mb-3" >Cancelar</a>
-
-                </form>
-            </div>
-        </div>
+            <button type="submit" class="btn btn-success w-100 mb-2">Guardar Cambios</button>
+            <a href="index.php" class="btn btn-secondary w-100">Cancelar</a>
+        </form>
     </div>
-
 </body>
 </html>
