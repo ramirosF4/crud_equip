@@ -5,10 +5,9 @@ include_once 'config/conexion.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// BLOQUE DE SEGURIDAD
-// Si no hay ID en la URL y tampoco se está guardando info...
+// Si no hay ID en la URL y tampoco se está guardando info
 if (!isset($_GET['id']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    // ... mándalo de regreso al inicio para evitar el Error 500
+    // Para evitar el Error 500
     header('Location: index.php');
     exit();
 }
