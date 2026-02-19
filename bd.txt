@@ -1,0 +1,30 @@
+Van a crear la base de datos asi
+
+(Esta parte primero)
+
+
+CREATE DATABASE escuela;
+
+USE escuela;
+
+CREATE TABLE alumnos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    carrera VARCHAR(100) NOT NULL,
+    semestre INT NOT NULL
+);
+
+(Luego esta)
+INSERT INTO alumnos (nombre, apellido, carrera, semestre)
+VALUES 
+('Fátima', 'Sánchez', 'Ingeniería en Sistemas', 6),
+('Tristan', 'Martinez', 'Turismo', 6),
+('Adson', 'García', 'Turismo', 6),
+('Balam', 'Perales', 'SIS', 6);
+
+(Si quieren verificar la informacion)
+SHOW DATABASES;
+USE escuela;
+SHOW TABLES;
+DESCRIBE alumnos;
