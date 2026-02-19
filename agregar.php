@@ -1,6 +1,6 @@
 <?php
 
-require_once './controller/conexion.php'; 
+require_once './config/conexion.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $insercion = $conexion->prepare("
