@@ -1,4 +1,10 @@
+<?php
+require_once './controller/conexion.php'; 
+$consulta = $conexion->prepare("SELECT * FROM alumnos");
+$consulta -> execute();
+$alumno = $consulta ->fetchAll(PDO::FETCH_ASSOC);
 
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,20 +38,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    
+                    <?php foreach($alumno as $persona): ?>
                     <tr>
-                        <td>txt</td>
-                        <td>txt</td>
-                        <td>txt</td>
-                        <td>txt</td>
-                        <td>txt</td>
+                        <td><?= $persona['id'] ?></td>
+                        <td><?= $persona['nombre'] ?></td>
+                        <td><?= $persona['apellido'] ?></td>
+                        <td><?= $persona['carrera'] ?></td>
+                        <td><?= $persona['semestre'] ?></td>
                         <td>
                             <a href="editar.php" class="btn btn-outline-success">Editar</a>
-                            <a href="" class="btn btn-outline-danger">Eliminar</a>
-                        </td>          
+                            <a href="eliminar.php" class="btn btn-outline-danger">Eliminar</a>
+                        </td>
                     </tr>
+                    <?php endforeach; ?>
 
-                    </tbody>    
                 </table>        
             </div>        
       </div>     
